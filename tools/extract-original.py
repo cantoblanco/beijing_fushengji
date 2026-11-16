@@ -3,6 +3,7 @@ from pathlib import Path
 import json,re,shutil
 root=Path(__file__).resolve().parents[1]
 out=root/'docs'; assets=out/'assets'
+(assets/'sound').mkdir(parents=True,exist_ok=True)
 def read(name): return (root/name).read_bytes().decode('gb18030')
 s=read('SelectionDlg.cpp')
 def rows(name):
@@ -25,5 +26,5 @@ for src,target in [('res/subway.bmp','subway.png'),('res/logo.bmp','logo.png'),(
 helptext=bytes(b^0x52 for b in (root/'helpinfo').read_bytes()).decode('gb18030')
 helptext=helptext.replace('<HEAD>','<HEAD><meta charset="UTF-8">').replace('background="backblue.gif"','style="background:#e4f0f9;font-family:serif;line-height:1.8;max-width:900px;margin:24px auto;padding:16px"')
 (out/'help.html').write_text('\n'.join(x.rstrip() for x in helptext.splitlines())+'\n')
-shutil.copy(root/'license.txt',out/'license.txt')
+(out/'license.txt').write_text((root/'license.txt').read_text().rstrip()+'\n')
 print('Extracted',len(data['commercial']),len(data['health']),len(data['theft']),'events;',len(dialogs),'dialogs')
